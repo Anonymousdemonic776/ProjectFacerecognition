@@ -1,16 +1,5 @@
-# importing libraries
-import matplotlib.pyplot as plt
-import seaborn
-
-# declaring data
-data = [44, 45, 40, 41, 39]
-keys = ['Class 1', 'Class 2', 'CLass 3', 'Class 4', 'Class 5']
-
-# define Seaborn color palette to use
-palette_color = seaborn.color_palette('bright')
-
-# plotting data on chart
-plt.pie(data, labels=keys, colors=palette_color, autopct='%.0f%%')
-
-# displaying chart
-plt.show()
+import plotly.express as px
+# This dataframe has 244 lines, but 4 distinct values for `day`
+df = px.data.tips()
+fig = px.pie(df, values='tip', names='day')
+fig.show()
