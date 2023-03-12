@@ -1,16 +1,16 @@
-from matplotlib import pyplot as plt
-import numpy as np
+# importing libraries
+import matplotlib.pyplot as plt
+import seaborn
 
+# declaring data
+data = [44, 45, 40, 41, 39]
+keys = ['Class 1', 'Class 2', 'CLass 3', 'Class 4', 'Class 5']
 
-# Creating dataset
-a = np.array([22, 87, 5, 43, 56,
-			73, 55, 54, 11,
-			20, 51, 5, 79, 31,
-			27])
+# define Seaborn color palette to use
+palette_color = seaborn.color_palette('bright')
 
-# Creating histogram
-fig, ax = plt.subplots(figsize =(10, 7))
-ax.hist(a, bins = [0, 25, 50, 75, 100])
+# plotting data on chart
+plt.pie(data, labels=keys, colors=palette_color, autopct='%.0f%%')
 
-# Show plot
+# displaying chart
 plt.show()
