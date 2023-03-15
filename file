@@ -1,1 +1,210 @@
-tqoiihqyuudsaqwj
+from flask import Flask,render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+
+def fun():
+    import os
+    import tkinter as tk
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from tkinter import ttk
+    import numpy as np
+    from tkinter import messagebox
+
+    r = tk.Tk()
+    r.geometry('200x200')
+    def x():
+        root = tk.Tk()
+        root.geometry('300x300')
+
+        def Pie_Chart():
+            root2 = tk.Tk()
+            root2.geometry('200x200')
+            l = ['3 Days', '1 Week', '3 Weeks', '1 month', 'All time']
+
+            def Further_Process():
+                val = str(cmb.get())
+                if val == l[0]:
+                    val = 3
+                elif val == l[1]:
+                    val = 7
+                elif val == l[2]:
+                    val = 21
+                elif val == l[3]:
+                    val = 30
+
+                elif val == l[4]:
+                    val = 0
+
+                with open('List/Absent.txt', 'r') as f:
+                    content = np.array(f.read().split(','), dtype='int32')
+                    # print(content)
+                with open('List/Present.txt') as f:
+                    content2 = np.array(f.read().split(','), dtype='int32')
+
+                if len(content) < val:
+                    messagebox.showinfo('Info', 'Not enough data available')
+                else:
+                    Ab = np.sum(content[-val:])
+                    pr = np.sum(content2[-val:])
+                    x = {'Absent':Ab,
+                         'Present':pr}
+                    import pandas
+                    df = pandas.DataFrame(x)
+                    fig = go.Figure(data=[go.Pie(labels=['Absent','Present'],
+                                                 values=x,
+                                                 color_discrete_map={'Absent':'red',
+                                                                    'present':'blue'}
+                                                 )])
+
+                    fig.show()
+
+            cmb = ttk.Combobox(root2, values=l)
+            cmb['state'] = 'readonly'
+            Input_btn = tk.Button(root2, text='->', command=Further_Process)
+            cmb.current(0)
+            cmb.pack()
+            Input_btn.pack()
+            root2.mainloop()
+
+        def Absent_Graph():
+            root3 = tk.Tk()
+            root3.geometry('200x200')
+            l2 = ['3 Days', '1 Week', '3 Weeks', '1 month', 'All time']
+
+            def Further_Process():
+                val2 = str(cmb.get())
+                if val2 == l2[0]:
+                    val2 = 3
+                elif val2 == l2[1]:
+                    val2 = 7
+                elif val2 == l2[2]:
+                    val2 = 21
+                elif val2 == l2[3]:
+                    val2 = 30
+                elif val2 == l2[4]:
+                    val2 = 0
+
+                with open('List/Absent.txt', 'r') as f:
+                    content = np.array(f.read().split(','))
+                    print(content)
+
+                if len(content) < val2:
+                    messagebox.showinfo('Info', 'Not enough data available')
+                else:
+                    # Ab = np.sum(content)
+                    fig = px.line(x=np.arange(0,len(content),1),
+                                  y=content,
+                                  title='Absent Graph')
+                    fig.show()
+
+            cmb = ttk.Combobox(root3, values=l2)
+            cmb['state'] = 'readonly'
+            Input_btn = tk.Button(root3, text='->', command=Further_Process)
+            cmb.current(0)
+            cmb.pack()
+            Input_btn.pack()
+            root3.mainloop()
+
+        def Present_Graph():
+            root4 = tk.Tk()
+            root4.geometry('200x200')
+            l = ['3 Days', '1 Week', '3 Weeks', '1 month', 'All time']
+
+            def Further_Process():
+                val = str(cmb.get())
+                if val == l[0]:
+                    val = 3
+                elif val == l[1]:
+                    val = 7
+                elif val == l[2]:
+                    val = 21
+                elif val == l[3]:
+                    val = 30
+                elif val == l[4]:
+                    val = 0
+
+                with open('List/Present.txt') as f:
+                    content2 = np.array(f.read().split(','))
+
+                if len(content2) < val,:
+                    messagebox.showinfo('Info', 'Not enough data available')
+                else:
+
+                    fig = px.line(x=np.arange(0, len(content2), 1),
+                                  y=content2,
+                                  title='Present Graph')
+                    fig.show()
+
+            cmb = ttk.Combobox(root4, values=l)
+            cmb['state'] = 'readonly'
+            Input_btn = tk.Button(root4, text='->', command=Further_Process)
+            cmb.current(0)
+            cmb.pack()
+            Input_btn.pack()
+            root4.mainloop()
+
+        btn1 = tk.Button(root, text='Pie chart', command=Pie_Chart)
+        btn2 = tk.Button(root, text='Absent Graph', command=Absent_Graph)
+        btn3 = tk.Button(root, text='Present Graph', command=Present_Graph)
+        btn1.pack()
+        btn2.pack()
+        btn3.pack()
+        root.mainloop()
+
+    def y():
+        r2 = tk.Tk()
+        r2.geometry('250x250')
+        with open('List/Indivisual_Attandance_Rate.csv') as f:
+            content2 = f.readlines()[1:]
+
+        All_Data = {}
+        for n in content2:
+            All_Data[n.split(',')[0]] = [int(n.split(',')[1]),int(n.split(',')[2])]
+
+        print(All_Data)
+        def FurtherProcess():
+            val = cmb.get()
+            val = str(val)
+            target_Info = list(All_Data[val])
+            if target_Info == [0,0]:
+                messagebox.showinfo("Info","No Info Available About This student")
+            else:
+                fig = go.Figure(data=[go.Pie(labels=['Present','Absent'],
+                                             values=target_Info)])
+
+                fig.show()
+
+        with open('List/Current_user_list.csv' , 'r') as f:
+            content = f.readlines()[1:]
+
+        All_User = []
+
+        for x in content:
+            All_User.append(x.split(',')[0])
+
+
+        print(All_User)
+        cmb = ttk.Combobox(r2,values=All_User)
+        cmb['state'] = 'readonly'
+        cmb.current(0)
+        cmb.pack()
+        btn = tk.Button(r2,text='->',command=FurtherProcess)
+        btn.pack()
+        r2.mainloop()
+
+
+    button = tk.Button(r,text='Entire',command=x)
+    button2 = tk.Button(r,text='Individual',command=y)
+
+    button.pack()
+    button2.pack()
+    r.mainloop()
+
+    return render_template('Home_Page.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True,port=5004)
